@@ -1,0 +1,18 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: mynamespace 
+
+resources:
+- backend_deployment.yaml
+- backend_service.yaml
+- db_deployment.yaml
+- db_service.yaml
+- frontend_deployment.yaml
+- frontend_service.yaml
+configMapGenerator: 
+- name: mongodb-config 
+  env: config.properties 
+secretGenerator: 
+- name: mongo-secrets
+  env: secret.properties
+

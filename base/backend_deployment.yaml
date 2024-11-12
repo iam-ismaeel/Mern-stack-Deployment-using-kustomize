@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api
+  namespace: mynamespace
+spec:
+  replicas: 1
+  strategy:          #for updating image versions.
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 25%
+  selector: 
+    matchLabels:
+      app: mern-app
+      role: api 
+  template:
+    metadata:
+      labels:
+        app: mern-app
+        role: api
+    spec:
+      containers:
+      - name: api
+        image: ismail55/backend:v6
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 4000
+        env:
+          - name: MONGO_CONN_STR
+            valueFrom:
+              configMapKeyRef:
+                name: mongodb-config
+                key: MONGO_CONN_STR
+          - name: MONGO_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: mongo-secrets
+                key: username
+          - name: MONGO_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: mongo-secrets
+                key: password
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "128Mi"
+       
+          limits:
+            cpu: "200m"
+            memory: "256Mi"  
+        livenessProbe:
+          httpGet:
+            path: /healthcheck
+            port: 4000
+          initialDelaySeconds: 5
+          periodSeconds: 5
+        readinessProbe:
+          httpGet:
+             path: /ready
+             port: 4000
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          successThreshold: 2

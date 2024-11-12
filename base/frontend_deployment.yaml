@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  namespace: mynamespace
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 25%
+  selector:
+    matchLabels:
+      app: mern-app
+      role: frontend
+  template:
+    metadata:
+      labels:
+        app: mern-app
+        role: frontend
+    spec:
+      containers:
+      - name: frontend
+        image: ismail55/frontend:v8
+        imagePullPolicy: Always
+        env:
+          - name: REACT_APP_BACKEND_URL
+            value: "http://10.152.183.66:4000/hello"
+        ports:
+        - containerPort: 80
+        # livenessProbe:
+        #   httpGet:
+        #     path: /
+        #     port: 3000
+        #   initialDelaySeconds: 2
+        #   periodSeconds: 5
+        # readinessProbe:
+        #   httpGet:
+        #      path: /
+        #      port: 3000
+        #   initialDelaySeconds: 5
+        #   periodSeconds: 5
+        #   successThreshold: 1
