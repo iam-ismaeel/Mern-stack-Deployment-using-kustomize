@@ -4,4 +4,4 @@ metadata:
  name: frontend
  namespace: staging
 spec:
-  replicas: 7
+  replicas: 5
