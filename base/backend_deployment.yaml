@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
       - name: api
-        image: ismail55/backend:v6
+        image: ismail55/backend:1.0.0
         imagePullPolicy: Always
         ports:
         - containerPort: 4000
