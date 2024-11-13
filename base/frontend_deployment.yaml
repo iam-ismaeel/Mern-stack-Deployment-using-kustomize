@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: ismail55/frontend:v8
+        image: ismail55/frontend:1.0.0
         imagePullPolicy: Always
         env:
           - name: REACT_APP_BACKEND_URL
