@@ -1,0 +1,3 @@
+kustomize:
+  images:
+  - ismail55/backend:1.0.1
