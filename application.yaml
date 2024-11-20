@@ -1,0 +1,30 @@
+apiVersion: argoproj.io/v1alpha1            
+kind: Application
+metadata:
+  name: mern-app
+  namespace: argocd
+  annotations:      
+    argocd-image-updater.argoproj.io/image-list: ismail55/backend:~1.0, ismail55/frontend:~1.0, mongo:latest
+    argocd-image-updater.argoproj.io/write-back-method: git:secret:argocd/mern-app-secret
+    argocd-image-updater.argoproj.io/enabled: "true"
+    argocd-image-updater.argoproj.io/git-branch: main
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io   
+spec:
+  project: default
+  source: 
+    repoURL: https://github.com/iam-ismaeel/Mern-stack-Deployment-using-kustomize.git
+    targetRevision: main
+    path: overlays/dev/  
+  destination:         
+    server: https://kubernetes.default.svc
+  syncPolicy: 
+    automated:
+      prune: true 
+      selfHeal: true 
+      allowEmpty: false
+    syncOptions:
+      - Validate=true
+      - CreateNamespace=false
+      - PrunePropagatonPolicy=foreground
+      - PruneLast=true 
