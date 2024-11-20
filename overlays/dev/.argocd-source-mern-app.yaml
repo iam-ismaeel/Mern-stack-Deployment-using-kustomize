@@ -1,3 +1,4 @@
 kustomize:
   images:
   - ismail55/backend:1.0.1
+  - ismail55/frontend:1.0.1
